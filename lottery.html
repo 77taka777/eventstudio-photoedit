@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>抽選｜Event Studio 現場ポータル</title><meta name="description" content="名前のリストや番号から当選者を引く抽選ツール。全画面の演出、重複なし、記録のCSV保存に対応。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="抽選｜Event Studio 現場ポータル"><meta property="og:description" content="名前のリストや番号から当選者を引く抽選ツール。全画面の演出、重複なし、記録のCSV保存に対応。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tools.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page lottery-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>このツールを使うには、ブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap">
+<header class="tool-head">
+<p class="crumb"><a data-site-nav href="index.html#tools">進める</a> / 抽選</p>
+<h1>抽選</h1>
+<p class="lead">名前のリストや番号から、当選を引きます。会場の画面に全画面で映して、Space キーで抽選。結果はその場で記録されます。</p>
+</header>
+<section class="card" aria-labelledby="sourceHeading">
+<h2 class="card-title" id="sourceHeading">抽選する対象</h2>
+<div class="seg" role="radiogroup" aria-label="対象の種類">
+<label><input type="radio" name="source" value="names" checked><span>名前・リスト</span></label>
+<label><input type="radio" name="source" value="numbers"><span>番号</span></label>
+</div>
+<div id="namesPanel">
+<label class="sr-only" for="names">抽選する名前（1行に1件）</label>
+<textarea id="names" rows="8" placeholder="1行に1件ずつ入力&#10;例：&#10;山田 花子&#10;佐藤 健&#10;A-103"></textarea>
+<div class="lot-count" id="namesCount">0件</div>
+<p class="fine">表計算ソフトの列をそのまま貼り付けられます。同じ行が複数あると、その数だけ当たりやすくなります。</p>
+</div>
+<div id="numbersPanel" hidden>
+<div class="lot-range">
+<div class="field"><label for="from">はじめの番号</label><input id="from" type="number" min="0" max="999999" step="1" value="1" inputmode="numeric"></div>
+<span class="sep">〜</span>
+<div class="field"><label for="to">おわりの番号</label><input id="to" type="number" min="0" max="999999" step="1" value="100" inputmode="numeric"></div>
+</div>
+<p class="fine">整理券や座席番号での抽選に。一度に扱えるのは10万件までです。</p>
+</div>
+<div id="sourceStatus" class="status" role="status"></div>
+</section>
+<section class="card" aria-labelledby="ruleHeading">
+<h2 class="card-title" id="ruleHeading">引き方</h2>
+<div class="fields three">
+<div class="field"><label for="prize">賞の名前 <span class="unit">任意</span></label><input id="prize" type="text" maxlength="40" placeholder="例：A賞" autocomplete="off"></div>
+<div class="field"><label for="count">1回に引く数</label><input id="count" type="number" min="1" max="50" step="1" value="1" inputmode="numeric"></div>
+<div class="field"><label for="spin">発表までの演出</label><select id="spin"><option value="0">すぐに発表</option><option value="2">2秒</option><option value="4" selected>4秒</option><option value="6">6秒</option></select></div>
+</div>
+<div class="checks"><label class="check"><input id="unique" type="checkbox" checked>一度当たったら、次の抽選から外す</label></div>
+</section>
+<div class="runbar"><button id="open" class="primary" type="button">全画面で抽選を始める</button><span id="poolInfo" class="fine" style="margin:0" role="status"></span></div>
+<section class="card" aria-labelledby="historyHeading">
+<div class="card-head"><h2 class="card-title" id="historyHeading">当選の記録</h2><div class="card-actions"><button type="button" class="small" id="exportCsv">CSVで保存</button><button type="button" class="small" id="undo">直前の1回を取り消す</button><button type="button" class="small danger" id="clear">記録をすべて消す</button></div></div>
+<ol class="lot-history" id="history"></ol>
+<div class="empty" id="historyEmpty">まだ抽選していません。</div>
+<p class="fine">記録と残りの対象はこのブラウザの中に保存されます。ページを開き直しても、同じ人が二度当たることはありません。</p>
+</section>
+<p class="note"><span class="key">Space</span> または <span class="key">Enter</span> 抽選する　 <span class="key">B</span> 暗転　 <span class="key">F</span> 全画面　 <span class="key">Esc</span> 設定に戻る<br>抽選には、ブラウザの暗号用乱数を使って偏りが出ないようにしています。</p>
+</main>
+<section id="stage" class="stage lot-stage" aria-label="抽選の表示" hidden>
+<div class="lot-prize" id="stagePrize"></div>
+<div class="lot-box" id="box"><div class="lot-reel is-idle" id="reel" aria-live="polite"></div></div>
+<div class="lot-foot" id="stageFoot"></div>
+<div class="stage-blackout"></div>
+<div class="stage-controls">
+<div class="stage-info"><strong>抽選</strong>Space：抽選する　Esc：設定に戻る</div>
+<div class="stage-buttons"><button id="draw" class="primary" type="button">抽選する</button><button id="stageUndo" type="button">取り消す</button><button id="blackoutBtn" type="button">暗転</button><button id="fullscreenBtn" type="button">全画面</button><button id="back" type="button">設定に戻る</button></div>
+</div>
+</section>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/lottery.js" defer></script>
+</body></html>

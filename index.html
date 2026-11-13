@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>Event Studio 現場ポータル｜イベントの現場で使う道具をひとつに</title><meta name="description" content="スライドショー、サイネージ、進行表、ステージタイマー、抽選、来場カウンターなど、イベントの現場で使う道具をブラウザひとつに。入力内容は端末内だけで扱います。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="Event Studio 現場ポータル｜イベントの現場で使う道具をひとつに"><meta property="og:description" content="スライドショー、サイネージ、進行表、ステージタイマー、抽選、来場カウンターなど、イベントの現場で使う道具をブラウザひとつに。入力内容は端末内だけで扱います。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="home-page">
+<a class="site-skip" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html" aria-current="page">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<main id="main" class="site-main">
+<section class="board" aria-label="現場ボード">
+<div class="board-top">
+<div><div class="board-date" id="boardDate">&nbsp;</div><div class="board-clock" role="timer" aria-label="現在時刻"><span id="boardClock">--:--</span><small id="boardSeconds">:--</small></div></div>
+<div class="board-event"><label for="eventName">きょうのイベント</label><input id="eventName" type="text" maxlength="60" placeholder="イベント名を入れておけます" autocomplete="off"></div>
+</div>
+<div class="board-tiles">
+<a class="board-tile is-empty" id="tileRundown" href="rundown.html">
+<div class="board-tile-label"><span>進行</span><b id="tileOffset" hidden></b></div>
+<div class="board-tile-main" id="tileRundownMain">進行表をつくる</div>
+<div class="board-tile-sub" id="tileRundownSub">いまの演目と、次までの残り時間がここに出ます</div>
+</a>
+<a class="board-tile is-empty" id="tileCounter" href="counter.html">
+<div class="board-tile-label"><span>来場</span></div>
+<div class="board-tile-main" id="tileCounterMain">数えはじめる</div>
+<div class="board-tile-sub" id="tileCounterSub">いま会場にいる人数がここに出ます</div>
+<div class="board-meter" id="tileCounterMeter" hidden><i></i></div>
+</a>
+<a class="board-tile is-empty" id="tileChecklist" href="checklist.html">
+<div class="board-tile-label"><span>チェック</span></div>
+<div class="board-tile-main" id="tileChecklistMain">確認をはじめる</div>
+<div class="board-tile-sub" id="tileChecklistSub">準備から撤収までの項目を用意しています</div>
+<div class="board-meter" id="tileChecklistMeter" hidden><i></i></div>
+</a>
+</div>
+</section>
+<section class="site-intro">
+<h1>映す、進める、数える、仕込む。</h1>
+<p class="site-lead">イベントの現場で使う道具を、ひとつの場所にまとめました。会場のPCでもスタッフのスマホでも、ブラウザで開けばそのまま使えます。</p>
+<ul class="site-benefits"><li>インストール・ログイン不要</li><li>写真も入力内容も外部に送信しない</li><li>ネットのない会場へ持ち出せる</li></ul>
+</section>
+<div class="directory" id="tools">
+<section class="directory-group" aria-labelledby="groupScreen">
+<div class="directory-head"><h2 id="groupScreen">映す</h2><p>会場のスクリーンや<br>モニターに出すもの</p></div>
+<ul class="directory-list">
+<li><a href="slideshow.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4z"/></svg></span><span class="directory-name">スライドショー</span><span class="directory-note">写真フォルダを選んで、全画面でループ上映。ゆっくりズームと自然な切り替えつき。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="signage.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 10h10"/></svg></span><span class="directory-name">サイネージ</span><span class="directory-note">「まもなく開演」「受付はこちら」を画面いっぱいに。カウントダウンと矢印の案内も。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="qr.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2M20 14v2M14 20h2M18 18h2v2"/></svg></span><span class="directory-name">QRコード</span><span class="directory-note">アンケートのURLや会場Wi-FiをQRコードに。大きく映すか、画像で保存して配布物へ。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+</ul>
+</section>
+<section class="directory-group" aria-labelledby="groupRun">
+<div class="directory-head"><h2 id="groupRun">進める</h2><p>本番の進行を<br>時間どおりに運ぶもの</p></div>
+<ul class="directory-list">
+<li><a href="rundown.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg></span><span class="directory-name">進行表</span><span class="directory-note">いまの演目と、次のきっかけまでの残り時間。押し巻きもワンタップで反映。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="timer.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6M12 2v3"/></svg></span><span class="directory-name">ステージタイマー</span><span class="directory-note">登壇者に見せる大きな残り時間。色の変化と超過表示、数字キーで出すカンペつき。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="lottery.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v2M14 11v2M14 16v2"/></svg></span><span class="directory-name">抽選</span><span class="directory-note">名前のリストや番号から当選を引く。全画面の演出、重複なし、結果の記録まで。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+</ul>
+</section>
+<section class="directory-group" aria-labelledby="groupOps">
+<div class="directory-head"><h2 id="groupOps">数える・<wbr>確かめる</h2><p>受付と運営で<br>手元に置くもの</p></div>
+<ul class="directory-list">
+<li><a href="counter.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M18 5v6M15 8h6"/></svg></span><span class="directory-name">来場カウンター</span><span class="directory-note">入場と退場をタップで数えて、在場人数と定員までの余裕を表示。スマホ向け。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="checklist.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8M8 15l1.5 1.5L12 14M15 9.5h2M15 15.5h2"/></svg></span><span class="directory-name">チェックリスト</span><span class="directory-note">前日準備・設営・リハ・本番直前・撤収の確認項目。現場に合わせて書き換えられます。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+</ul>
+</section>
+<section class="directory-group" aria-labelledby="groupPrep">
+<div class="directory-head"><h2 id="groupPrep">仕込む</h2><p>本番の前に<br>素材と機材を整えるもの</p></div>
+<ul class="directory-list">
+<li><a href="image-batch.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg></span><span class="directory-name">画像を整える</span><span class="directory-note">バラバラな写真を同じサイズ・比率に一括で統一。1枚ずつ、またはZIPで保存。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+<li><a href="testpattern.html"><span class="directory-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M8 4v13M12 4v13M16 4v13"/></svg></span><span class="directory-name">画面・音響チェック</span><span class="directory-note">プロジェクターの色・ゆがみ・表示範囲を確かめるテストパターンと、スピーカー確認用の音。</span><span class="directory-open" aria-hidden="true">開く</span></a></li>
+</ul>
+</section>
+</div>
+<div class="site-data">
+<section class="site-data-card" aria-labelledby="dataTitle">
+<h2 id="dataTitle">入力した内容は、この端末の中だけ。</h2>
+<p>進行表、チェックリスト、来場の記録、抽選の対象と結果、サイネージの文面、タイマーの設定は、いま使っているブラウザに保存されます。別のPCで続きをするときは、書き出したファイルを読み込んでください。</p>
+<div class="site-data-actions"><button type="button" class="site-button secondary" id="exportData">まとめて書き出す</button><button type="button" class="site-button quiet" id="importData">ファイルから読み込む</button><button type="button" class="site-button danger" id="clearData">すべて削除</button></div>
+<input type="file" id="importInput" accept=".json,application/json" hidden>
+<div class="site-data-status" id="dataStatus" role="status"></div>
+</section>
+<section class="site-data-card offline" aria-labelledby="offlineTitle">
+<h2 id="offlineTitle">ネットがない会場にも、持ち出せる。</h2>
+<p>オフライン版を事前に保存して、ZIPを解凍。<br>中の index.html をブラウザで開けば、ネット接続なしで使えます。</p>
+<div class="site-data-actions"><a href="downloads/event-studio-offline.zip" download class="site-button secondary">オフライン版を保存</a></div>
+</section>
+</div>
+<div class="site-caveat"><strong>本番前に、一度だけリハーサル。</strong><p>PCを電源に接続し、スリープ・通知をオフに。実際の会場の画面で、使うツールを一度ずつ動かしてください。全画面表示のツールは PC版 Edge / Chrome 向けです。来場カウンターとチェックリストはスマホでも使えます。</p></div>
+</main>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/home.js" defer></script>
+</body></html>

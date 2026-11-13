@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>来場カウンター｜Event Studio 現場ポータル</title><meta name="description" content="入場と退場をタップで数えて、在場人数と定員に対する混み具合を表示。時間帯ごとの記録をCSVで保存。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="来場カウンター｜Event Studio 現場ポータル"><meta property="og:description" content="入場と退場をタップで数えて、在場人数と定員に対する混み具合を表示。時間帯ごとの記録をCSVで保存。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tools.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page counter-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>このツールを使うには、ブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap narrow">
+<header class="tool-head">
+<p class="crumb"><a data-site-nav href="index.html#tools">数える・確かめる</a> / 来場カウンター</p>
+<h1>来場カウンター</h1>
+<p class="lead">入口でタップして、いま会場に何人いるかを数えます。定員を入れておくと、混み具合も色と言葉で知らせます。</p>
+</header>
+<section class="card cnt-main" id="main" aria-labelledby="nowLabel">
+<div class="cnt-now"><small id="nowLabel">いま会場にいる人数</small><strong id="occupancy" aria-live="polite">0</strong><span class="unit">人</span></div>
+<div class="cnt-meter" aria-hidden="true"><i id="meter"></i></div>
+<div class="cnt-capline"><span id="capState">定員は未設定です</span><span id="capRate" class="num"></span></div>
+<div class="cnt-buttons">
+<button id="in" class="cnt-in" type="button">入場<b>＋1</b></button>
+<button id="out" class="cnt-out" type="button">退場<b>−1</b></button>
+</div>
+<div class="cnt-multi"><span>まとめて入場</span><button type="button" data-add="2">+2</button><button type="button" data-add="5">+5</button><button type="button" data-add="10">+10</button><button type="button" id="undo" class="ghost">ひとつ戻す</button></div>
+<div class="cnt-totals">
+<div><small>入場の合計</small><strong id="totalIn">0</strong></div>
+<div><small>退場の合計</small><strong id="totalOut">0</strong></div>
+<div><small>いちばん多かった時</small><strong id="peak">0</strong></div>
+</div>
+</section>
+<section class="card" aria-labelledby="capHeading">
+<h2 class="card-title" id="capHeading">定員</h2>
+<div class="cnt-cap"><div class="field"><label for="capacity">会場の定員 <span class="unit">人</span></label><input id="capacity" type="number" min="0" max="999999" step="1" inputmode="numeric" placeholder="未設定"></div><p class="fine" style="margin:0 0 10px">7割で「混み合っています」、9割で「まもなく定員」に変わります。</p></div>
+</section>
+<section class="card" aria-labelledby="logHeading">
+<div class="card-head"><h2 class="card-title" id="logHeading">30分ごとの記録</h2><div class="card-actions"><button type="button" class="small" id="exportSummary">集計をCSVで保存</button><button type="button" class="small" id="exportLog">全記録をCSVで保存</button></div></div>
+<div class="table-scroll"><table class="data-table" id="table"><thead><tr><th scope="col">時間帯</th><th scope="col">入場</th><th scope="col">退場</th><th scope="col">終わりの在場</th></tr></thead><tbody id="tableBody"></tbody></table></div>
+<div class="empty" id="tableEmpty">数え始めると、ここに時間帯ごとの人数が並びます。</div>
+<div class="runbar"><button type="button" id="reset" class="danger">0に戻して最初から</button></div>
+<p class="fine">数えた内容はこのブラウザの中に保存され、ページを開き直しても続きから数えられます。入口が複数あるときは、端末ごとに数えてCSVを足し合わせてください（端末どうしの同期はしません）。</p>
+</section>
+<p class="note">キーボードでも数えられます：<span class="key">+</span> 入場　 <span class="key">−</span> 退場　 <span class="key">Backspace</span> ひとつ戻す</p>
+</main>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/counter.js" defer></script>
+</body></html>

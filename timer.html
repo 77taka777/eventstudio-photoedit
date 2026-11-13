@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>ステージタイマー｜Event Studio 現場ポータル</title><meta name="description" content="登壇者に見せる大きな残り時間。カウントダウン、超過のカウントアップ、カンペ表示に対応。ブラウザだけで動きます。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="ステージタイマー｜Event Studio 現場ポータル"><meta property="og:description" content="登壇者に見せる大きな残り時間。カウントダウン、超過のカウントアップ、カンペ表示に対応。ブラウザだけで動きます。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tools.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page timer-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>このツールを使うには、ブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap">
+<header class="tool-head">
+<p class="crumb"><a data-site-nav href="index.html#tools">進める</a> / ステージタイマー</p>
+<h1>ステージタイマー</h1>
+<p class="lead">持ち時間を、登壇者から見える大きさで。残りわずかになると色が変わり、0を過ぎたら超過した時間を数えます。</p>
+</header>
+<section class="card" aria-labelledby="timeHeading">
+<h2 class="card-title" id="timeHeading">時間をセットする</h2>
+<div class="seg" role="radiogroup" aria-label="タイマーの種類">
+<label><input type="radio" name="mode" value="down" checked><span>カウントダウン</span></label>
+<label><input type="radio" name="mode" value="until"><span>終了時刻まで</span></label>
+<label><input type="radio" name="mode" value="up"><span>カウントアップ</span></label>
+</div>
+<div id="downPanel">
+<div class="timer-time">
+<div class="field"><label for="minutes">分</label><input id="minutes" type="number" min="0" max="999" step="1" value="15" inputmode="numeric"></div>
+<span class="sep">:</span>
+<div class="field"><label for="seconds">秒</label><input id="seconds" type="number" min="0" max="59" step="1" value="0" inputmode="numeric"></div>
+</div>
+<div class="chips" id="presets" aria-label="よく使う時間">
+<button type="button" data-min="1">1分</button><button type="button" data-min="3">3分</button><button type="button" data-min="5">5分</button><button type="button" data-min="10">10分</button><button type="button" data-min="15">15分</button><button type="button" data-min="20">20分</button><button type="button" data-min="30">30分</button><button type="button" data-min="45">45分</button><button type="button" data-min="60">60分</button><button type="button" data-min="90">90分</button>
+</div>
+</div>
+<div id="untilPanel" hidden>
+<div class="timer-time"><div class="field"><label for="until">終了時刻</label><input id="until" type="text" inputmode="numeric" placeholder="15:30" autocomplete="off"></div></div>
+<p class="fine">「1530」のように数字だけでも入力できます。日付をまたぐ場合は「25:00」と書けます。</p>
+</div>
+<div id="upPanel" hidden><p class="fine" style="margin-top:0">0から数え始めます。リハーサルの尺取りや、押し時間の計測に。</p></div>
+<div class="fields" style="margin-top:20px"><div class="field full"><label for="label">画面の上に出す名前 <span class="unit">任意</span></label><input id="label" type="text" maxlength="60" placeholder="例：基調講演 / 山田さん" autocomplete="off"></div></div>
+<div id="formStatus" class="status" role="status"></div>
+</section>
+<section class="card" aria-labelledby="alertHeading">
+<h2 class="card-title" id="alertHeading">残り時間の知らせ方</h2>
+<div class="fields">
+<div class="field"><label for="warn">文字を黄色にする</label><select id="warn"><option value="0">しない</option><option value="60">残り1分から</option><option value="120">残り2分から</option><option value="180" selected>残り3分から</option><option value="300">残り5分から</option><option value="600">残り10分から</option></select></div>
+<div class="field"><label for="danger">文字を赤にする</label><select id="danger"><option value="0">しない</option><option value="30">残り30秒から</option><option value="60" selected>残り1分から</option><option value="120">残り2分から</option><option value="300">残り5分から</option></select></div>
+</div>
+<div class="checks">
+<label class="check"><input id="overtime" type="checkbox" checked>0を過ぎたら超過時間を数える</label>
+<label class="check"><input id="sound" type="checkbox">0になったら音で知らせる</label>
+<label class="check"><input id="showClock" type="checkbox" checked>現在時刻も表示する</label>
+</div>
+</section>
+<section class="card" aria-labelledby="cueHeading">
+<h2 class="card-title" id="cueHeading">カンペ</h2>
+<div class="timer-cues" id="cues"></div>
+<p class="fine">表示中に数字キーを押すと、画面の上に大きく出ます。同じキーをもう一度押すか <span class="key">0</span> で消えます。20秒たつと自動で消えます。</p>
+</section>
+<div class="runbar"><button id="open" class="primary" type="button">全画面で表示する</button><button id="setupReset" type="button" hidden>リセット</button><span id="sessionStatus" class="fine" style="margin:0" role="status">表示したあと、Space キーでスタートします。</span></div>
+<div class="notice"><strong>本番前のチェック</strong><br>登壇者から見える画面にこのウィンドウを移してから表示してください。PCは電源につなぎ、スリープと通知をオフに。</div>
+<p class="note"><span class="key">Space</span> スタート・一時停止　 <span class="key">R</span> リセット（停止中のみ）　 <span class="key">↑</span> <span class="key">↓</span> 1分増やす・減らす　 <span class="key">1</span>〜<span class="key">6</span> カンペ　 <span class="key">B</span> 暗転　 <span class="key">F</span> 全画面　 <span class="key">Esc</span> 設定に戻る<br>設定に戻っても、タイマーは止まらずに動き続けます。時間の設定を変えて表示し直すと、新しい時間でリセットされます。</p>
+</main>
+<section id="stage" class="stage timer-stage" aria-label="タイマー表示" hidden>
+<div class="timer-cue" id="cue" role="status" hidden></div>
+<div class="timer-label" id="stageLabel"></div>
+<div class="timer-digits" id="digits" role="timer" aria-live="off">00:00</div>
+<div class="timer-foot"><span id="stageState"></span><span id="stageClock" class="num"></span></div>
+<div class="timer-bar" aria-hidden="true"><i id="bar"></i></div>
+<div class="stage-blackout"></div>
+<div class="stage-controls" id="controls">
+<div class="stage-info"><strong id="controlTitle">ステージタイマー</strong>Space：スタート / 一時停止　Esc：設定に戻る</div>
+<div class="stage-buttons"><button id="toggle" class="primary" type="button">スタート</button><button id="reset" type="button">リセット</button><button id="minus" type="button">−1分</button><button id="plus" type="button">＋1分</button><button id="blackoutBtn" type="button">暗転</button><button id="fullscreenBtn" type="button">全画面</button><button id="back" type="button">設定に戻る</button></div>
+<div class="stage-cues" id="stageCues" aria-label="カンペ"></div>
+</div>
+</section>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/timer.js" defer></script>
+</body></html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>QRコード｜Event Studio 現場ポータル</title><meta name="description" content="URLや会場Wi-FiをQRコードにして、全画面で映す・PNGやSVGで保存。生成はブラウザ内で完結します。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="QRコード｜Event Studio 現場ポータル"><meta property="og:description" content="URLや会場Wi-FiをQRコードにして、全画面で映す・PNGやSVGで保存。生成はブラウザ内で完結します。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tools.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page qr-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>このツールを使うには、ブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap wide">
+<header class="tool-head">
+<p class="crumb"><a data-site-nav href="index.html#tools">映す</a> / QRコード</p>
+<h1>QRコード</h1>
+<p class="lead">アンケートのURLや会場Wi-Fiを、スマホで読み取れるQRコードに。会場の画面に大きく映すことも、画像にして配布物に貼ることもできます。</p>
+</header>
+<div class="qr-layout">
+<div>
+<section class="card" aria-labelledby="contentHeading">
+<h2 class="card-title" id="contentHeading">QRコードにする内容</h2>
+<div class="seg" role="radiogroup" aria-label="内容の種類">
+<label><input type="radio" name="kind" value="text" checked><span>URL・テキスト</span></label>
+<label><input type="radio" name="kind" value="wifi"><span>Wi-Fi</span></label>
+</div>
+<div id="textPanel">
+<label class="sr-only" for="text">URLまたはテキスト</label>
+<textarea id="text" rows="4" placeholder="https://example.com/survey" spellcheck="false" autocomplete="off"></textarea>
+<p class="fine">URLは「https://」から入力してください。短いほど、読み取りやすいQRコードになります。</p>
+</div>
+<div id="wifiPanel" hidden>
+<div class="fields">
+<div class="field full"><label for="ssid">ネットワーク名（SSID）</label><input id="ssid" type="text" maxlength="32" autocomplete="off" spellcheck="false"></div>
+<div class="field full"><label for="password">パスワード</label><div class="qr-pass"><input id="password" type="password" maxlength="63" autocomplete="off" spellcheck="false"><button type="button" id="togglePassword" aria-pressed="false">表示する</button></div></div>
+<div class="field"><label for="security">暗号化</label><select id="security"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">なし（パスワード不要）</option></select></div>
+</div>
+<div class="checks"><label class="check"><input id="hidden" type="checkbox">ネットワーク名を隠している（ステルス）</label></div>
+<p class="fine">読み取ったスマホが、そのままWi-Fiにつながります。パスワードは保存されず、このページを閉じると消えます。</p>
+</div>
+</section>
+<section class="card" aria-labelledby="lookHeading">
+<h2 class="card-title" id="lookHeading">見せ方</h2>
+<div class="fields">
+<div class="field full"><label for="heading">QRコードの上に出す言葉 <span class="unit">任意</span></label><input id="heading" type="text" maxlength="60" placeholder="例：アンケートにご協力ください" autocomplete="off"></div>
+<div class="field full"><label for="caption">QRコードの下に出す補足 <span class="unit">任意</span></label><input id="caption" type="text" maxlength="100" placeholder="例：所要時間は1分です" autocomplete="off"></div>
+<div class="field"><label for="level">汚れ・欠けへの強さ</label><select id="level"><option value="L">低（いちばん細かさが少ない）</option><option value="M" selected>標準</option><option value="Q">高</option><option value="H">最高（小さな印刷・シール向け）</option></select></div>
+<div class="field"><label for="pixels">保存する画像の大きさ</label><select id="pixels"><option value="512">約512px（画面用）</option><option value="1024" selected>約1024px（配布物用）</option><option value="2048">約2048px（大きな印刷用）</option></select></div>
+</div>
+</section>
+</div>
+<div class="qr-preview-col">
+<div class="qr-paper" id="paper"><div class="qr-head" id="previewHead"></div><canvas id="canvas" width="330" height="330" role="img" aria-label="QRコードのプレビュー"></canvas><div class="qr-cap" id="previewCap"></div></div>
+<div class="qr-meta" id="meta"></div>
+<div id="status" class="status" role="status"></div>
+<div class="runbar"><button id="open" class="primary" type="button" disabled>全画面で映す</button><button id="savePng" type="button" disabled>PNGで保存</button><button id="saveSvg" type="button" disabled>SVGで保存</button></div>
+<p class="note"><span class="key">B</span> 暗転　 <span class="key">F</span> 全画面　 <span class="key">Esc</span> 設定に戻る<br>QRコードはこのブラウザの中で作ります。入力した内容はどこにも送信・保存しません。配る前に、手元のスマホで一度読み取って確かめてください。</p>
+</div>
+</div>
+</main>
+<section id="stage" class="stage qr-stage" aria-label="QRコードの表示" hidden>
+<div class="qr-stage-head" id="stageHead"></div>
+<div class="qr-stage-box"><canvas id="stageCanvas" width="600" height="600" role="img" aria-label="QRコード"></canvas></div>
+<div class="qr-stage-cap" id="stageCap"></div>
+<div class="stage-blackout"></div>
+<div class="stage-controls">
+<div class="stage-info"><strong>QRコード</strong>B：暗転　Esc：設定に戻る</div>
+<div class="stage-buttons"><button id="blackoutBtn" type="button">暗転</button><button id="fullscreenBtn" type="button">全画面</button><button id="back" type="button">設定に戻る</button></div>
+</div>
+</section>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/qrcode.js" defer></script>
+<script src="assets/qr.js" defer></script>
+</body></html>

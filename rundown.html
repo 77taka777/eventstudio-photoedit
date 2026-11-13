@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>進行表｜Event Studio 現場ポータル</title><meta name="description" content="いまの演目と次のきっかけ、押し巻きをひと目で。タイムテーブルを入力して、進行モニターを全画面で表示。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="進行表｜Event Studio 現場ポータル"><meta property="og:description" content="いまの演目と次のきっかけ、押し巻きをひと目で。タイムテーブルを入力して、進行モニターを全画面で表示。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tools.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page rundown-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>このツールを使うには、ブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap wide">
+<header class="tool-head">
+<p class="crumb"><a data-site-nav href="index.html#tools">進める</a> / 進行表</p>
+<h1>進行表</h1>
+<p class="lead">いま何の時間で、次のきっかけまであと何分か。タイムテーブルを入れておくと、押し巻きを含めて追いかけます。</p>
+</header>
+<section class="card no-print" aria-labelledby="liveHeading">
+<h2 class="sr-only" id="liveHeading">いまの進行</h2>
+<div class="rd-live">
+<div class="rd-live-clock"><small>現在</small><strong id="liveClock" class="num">--:--:--</strong></div>
+<div><small>いま</small><strong id="liveNow">—</strong><div class="rd-progress" aria-hidden="true"><i id="liveBar"></i></div></div>
+<div><small id="liveNextLabel">つぎ</small><strong id="liveNext">—</strong><span id="liveCountdown" class="rd-count num"></span></div>
+</div>
+<div class="rd-offset">
+<span id="offsetLabel" class="rd-badge">定刻</span>
+<button type="button" data-shift="-300">5分巻く</button><button type="button" data-shift="-60">1分巻く</button><button type="button" data-shift="60">1分押す</button><button type="button" data-shift="300">5分押す</button><button type="button" id="offsetReset" class="ghost">定刻に戻す</button>
+<button type="button" id="openMonitor" class="primary">進行モニターを全画面で</button>
+</div>
+<p class="fine">「押す・巻く」は、これ以降の予定をまとめて後ろ・前にずらします。行の「いま開始」を押すと、その行がいま始まった扱いになります。</p>
+</section>
+<section class="card no-print" aria-labelledby="tableHeading">
+<div class="card-head"><h2 class="card-title" id="tableHeading">タイムテーブル</h2><div class="card-actions"><button type="button" class="small" id="addRowTop">行を追加</button></div></div>
+<div class="rd-colhead" id="colhead" aria-hidden="true"><span>開始</span><span style="text-align:right">長さ</span><span>内容</span><span>担当</span><span>メモ</span><span></span></div>
+<div class="rd-rows" id="rows" role="list"></div>
+<div class="empty" id="empty">まだ予定がありません。「行を追加」で入力するか、サンプルを入れて動きを確かめてください。</div>
+<div class="rd-foot"><button type="button" id="addRow">＋ 行を追加</button><button type="button" id="sample" class="ghost">サンプルを入れる</button></div>
+<p class="fine">時刻は「1830」のように数字だけでも入力できます。深夜は「25:00」と書くと日付をまたいで追えます。行は時刻順に自動で並びます。最後の行（終演・撤収など）が進行の終わりです。</p>
+</section>
+<section class="card no-print" aria-labelledby="ioHeading">
+<h2 class="card-title" id="ioHeading">保存・印刷</h2>
+<div class="card-actions"><button type="button" id="exportCsv">CSVで保存</button><button type="button" id="importCsv">CSVを読み込む</button><button type="button" id="print">印刷する</button><button type="button" id="clearAll" class="danger">すべて削除</button></div>
+<input id="csvInput" type="file" accept=".csv,.tsv,.txt,text/csv,text/plain" hidden>
+<p class="fine">CSVの列は「時刻, 内容, 担当, メモ」の順です。表計算ソフトで作った進行表もこの形で読み込めます。入力した内容はこのブラウザの中に自動で保存されます。</p>
+<div id="ioStatus" class="status" role="status"></div>
+</section>
+<table class="rd-print" id="printTable"></table>
+<p class="note no-print"><span class="key">↑</span> 1分押す　 <span class="key">↓</span> 1分巻く　 <span class="key">0</span> 定刻に戻す　 <span class="key">B</span> 暗転　 <span class="key">F</span> 全画面　 <span class="key">Esc</span> 設定に戻る（進行モニター表示中）</p>
+</main>
+<section id="stage" class="stage rd-stage" aria-label="進行モニター" hidden>
+<div class="rd-stage-top"><span class="rd-stage-event" id="stageEvent"></span><span class="num" id="stageClock">--:--:--</span></div>
+<div class="rd-stage-now"><small id="stageNowLabel">いま</small><strong id="stageNow">—</strong><div class="rd-progress" aria-hidden="true"><i id="stageBar"></i></div></div>
+<div class="rd-stage-next"><div style="min-width:0"><small id="stageNextLabel">つぎ</small><strong id="stageNext">—</strong></div><div class="rd-stage-count" id="stageCountBox"><small id="stageCountLabel">あと</small><span class="num" id="stageCount"></span></div></div>
+<div class="rd-stage-later"><span id="stageLater"></span><span id="stageOffset" class="rd-badge">定刻</span></div>
+<div class="stage-blackout"></div>
+<div class="stage-controls">
+<div class="stage-info"><strong>進行モニター</strong>↑ 押す　↓ 巻く　0 定刻　Esc：設定に戻る</div>
+<div class="stage-buttons"><button type="button" data-shift="-60">1分巻く</button><button type="button" data-shift="60">1分押す</button><button type="button" id="stageOffsetReset">定刻に戻す</button><button type="button" id="blackoutBtn">暗転</button><button type="button" id="fullscreenBtn">全画面</button><button type="button" id="back">設定に戻る</button></div>
+</div>
+</section>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<script src="assets/rundown.js" defer></script>
+</body></html>

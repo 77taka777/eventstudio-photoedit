@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0e1117">
+<title>スライドショー｜Event Studio 現場ポータル</title><meta name="description" content="写真フォルダを選んで、全画面のスライドショーに。ループ、ズーム、クロスフェード、暗転に対応。画像は端末内で処理します。">
+<meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="Event Studio"><meta property="og:title" content="スライドショー｜Event Studio 現場ポータル"><meta property="og:description" content="写真フォルダを選んで、全画面のスライドショーに。ループ、ズーム、クロスフェード、暗転に対応。画像は端末内で処理します。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/slideshow.css">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script>
+</head>
+<body class="tool-page slideshow-page">
+<a class="site-skip" href="#setup">本文へスキップ</a>
+<header class="site-header"><div class="site-header-inner">
+<a class="site-brand" data-site-nav href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><span>EVENT STUDIO<span class="site-brand-sub">現場ポータル</span></span></a>
+<nav class="site-nav" aria-label="メインナビゲーション"><a data-site-nav href="index.html">ホーム</a><a data-site-tools href="index.html#tools">ツール</a></nav>
+<span class="site-local">入力内容は端末内だけ</span>
+</div></header>
+<noscript>スライドショーの再生にはブラウザの JavaScript を有効にしてください。</noscript>
+<main id="setup" class="wrap">
+<p class="crumb"><a data-site-nav href="index.html#tools">映す</a> / スライドショー</p>
+<h1>写真を選んで、そのまま上映。</h1>
+<p class="lead">フォルダの写真を、ゆっくり動くスライドショーに。<br>追加インストール・ログイン不要。写真は端末内だけで読み込みます。</p>
+<div class="pills"><span class="pill">全画面でループ</span><span class="pill">外部送信なし</span><span class="pill">写真を切らずに表示</span><span class="pill">音声なし</span></div>
+<section class="card">
+<h2 class="section-title"><span class="number">1</span>上映する写真を選ぶ</h2>
+<div class="choose"><button id="chooseFolder" class="primary" type="button">フォルダを選択</button><button id="chooseFiles" type="button">写真を複数選択</button></div>
+<input id="folderInput" type="file" webkitdirectory multiple hidden>
+<input id="filesInput" type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif,image/bmp,image/gif" hidden>
+<div class="selection"><img id="thumb" class="thumb" alt="選択した写真のプレビュー" hidden><div><div id="count" class="count" aria-live="polite">まだ写真が選ばれていません</div><div id="source" class="fine">JPG / PNG / WebP / AVIF / BMP / GIF</div></div></div>
+<div class="checks"><label class="check"><input id="subfolders" type="checkbox">サブフォルダの写真も含める</label></div>
+<p class="fine">ブラウザが「アップロード」と表示しても、選択した写真は外部に送信しません。HEIC・RAW は対象外です。</p>
+<div id="status" class="status" role="status"></div>
+</section>
+<section class="card">
+<h2 class="section-title"><span class="number">2</span>見せ方を決める</h2>
+<div class="grid">
+<div class="field"><label for="seconds">1枚あたりの時間</label><select id="seconds"><option value="3">3秒</option><option value="5">5秒</option><option value="6" selected>6秒（おすすめ）</option><option value="8">8秒</option><option value="10">10秒</option><option value="15">15秒</option><option value="20">20秒</option><option value="30">30秒</option></select></div>
+<div class="field"><label for="order">再生する順番</label><select id="order"><option value="name">ファイル名順</option><option value="shuffle">ランダム（周回ごと）</option></select></div>
+<div class="field"><label for="background">写真の周りの余白</label><select id="background"><option value="soft">同じ写真のぼかし背景</option><option value="black">黒い背景</option></select></div>
+</div>
+<div class="checks"><label class="check"><input id="motion" type="checkbox" checked>ゆっくりズーム</label><label class="check"><input id="fade" type="checkbox" checked>なめらかに切り替える</label></div>
+<p class="fine">ズームは写真全体が画面に収まる範囲。縦写真や集合写真も、端を切らずに表示します。</p>
+</section>
+<div class="footer"><button id="start" class="primary" disabled type="button">全画面で上映スタート</button><span class="fine">最後まで進むと、自動で最初に戻ります。</span></div>
+<div class="notice"><strong>本番前のチェック</strong><br>会場の画面へこのウィンドウを移してから開始してください。PCは電源につなぎ、スリープと通知をオフに。必ず一周テスト再生してください。</div>
+<p class="note"><span class="key">Space</span> 一時停止・再開　 <span class="key">←</span> <span class="key">→</span> 前後の写真　 <span class="key">B</span> 暗転・解除　 <span class="key">F</span> 全画面　 <span class="key">Esc</span> 設定に戻る<br>PC版 Edge / Chrome 向けです。動画書き出し・BGM・フォルダの自動監視はありません。<br>選択後に写真を追加・変更した場合は、設定に戻ってフォルダを選び直してください。ページ移動・再読み込み・終了で選択は解除されます。<br>公開ページの読み込みにはネット接続が必要です。通信のない会場では、事前に「オフライン版を保存」してください。</p>
+</main>
+<section id="player" aria-label="スライドショー上映画面" hidden>
+<div class="slide"><img class="background" alt=""><img class="photo" alt=""></div>
+<div class="slide"><img class="background" alt=""><img class="photo" alt=""></div>
+<div class="blackout"></div>
+<div class="controls" id="controls">
+<div class="current"><div id="currentIndex" class="current-index"></div><div id="currentName" class="current-name"></div><div class="player-hint">Space：停止 / 再開　B：暗転　Esc：終了</div></div>
+<div class="buttons"><button id="prev" type="button" aria-label="前の写真">← 前へ</button><button id="pause" type="button">一時停止</button><button id="next" type="button" aria-label="次の写真">次へ →</button><button id="blackoutBtn" type="button">暗転</button><button id="fullscreenBtn" type="button">全画面</button><button id="stop" type="button">設定に戻る</button></div>
+</div>
+</section>
+<footer class="site-footer"><div><strong>EVENT STUDIO</strong><span>映す、進める、数える、仕込む。</span></div>
+<div class="site-footer-links"><a data-site-nav href="index.html#tools">ツール一覧</a><a data-site-nav href="privacy.html">データの扱い</a><a href="downloads/event-studio-offline.zip" download>オフライン版を保存</a></div>
+<p>外部送信なし / アカウント不要 / v2.0.0</p></footer>
+<dialog id="siteLeaveDialog" class="site-dialog" aria-labelledby="siteLeaveTitle" aria-describedby="siteLeaveText"><h2 id="siteLeaveTitle">移動する前に、保存しましたか？</h2><p id="siteLeaveText">このページを移動すると、選択した画像と変換結果は引き継がれません。必要なファイルを保存してから移動してください。</p><div class="site-dialog-actions"><button id="siteStay" type="button" autofocus>このページに戻る</button><button id="siteLeave" type="button">移動する</button></div></dialog>
+<script src="assets/slideshow.js" defer></script>
+</body></html>

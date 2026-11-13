@@ -1,0 +1,25 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+# Never put event photos or generated media in the public repository.
+photos/
+input/
+output/
+private/
+.env
+.env.*
+# Local development / test output
+node_modules/
+__pycache__/
+*.pyc
+playwright-report/
+test-results/
+_site/
+
+# Generated Vercel build and one-time deployment transport
+dist/
+.vercel/
+site-source.tar.gz
